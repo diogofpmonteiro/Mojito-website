@@ -1,4 +1,4 @@
-import { Navbar, Hero, Cocktails } from "./ui";
+import { Navbar, Hero, Cocktails, About } from "./ui";
 import { SplitText, ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
 
@@ -10,6 +10,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Cocktails />
+      <About />
+      {/* <Contact /> */}
+      {/* <Footer /> */}
     </main>
   );
 }
