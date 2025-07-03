@@ -82,8 +82,15 @@ const Hero = () => {
       <section id='hero' className='noisy'>
         <h1 className='title'>MOJITO</h1>
 
-        <Image src='/images/hero-left-leaf.png' alt='left-leaf' className='left-leaf' width={72} height={72} />
-        <Image src='/images/hero-right-leaf.png' alt='right-leaf' className='right-leaf' width={72} height={72} />
+        <Image priority src='/images/hero-left-leaf.png' alt='left-leaf' className='left-leaf' width={72} height={72} />
+        <Image
+          priority
+          src='/images/hero-right-leaf.png'
+          alt='right-leaf'
+          className='right-leaf'
+          width={72}
+          height={72}
+        />
 
         <div className='body'>
           <div className='content'>
