@@ -3,6 +3,9 @@ import Image from "next/image";
 import { navLinks } from "@/constants";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   useGSAP(() => {
@@ -23,7 +26,7 @@ const Navbar = () => {
         ease: "power1.inOut",
       }
     );
-  }, []);
+  });
 
   return (
     <nav>

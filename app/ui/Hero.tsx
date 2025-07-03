@@ -2,19 +2,18 @@
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SplitText, ScrollTrigger } from "gsap/all";
-
-gsap.registerPlugin(ScrollTrigger, SplitText);
+import { SplitText } from "gsap/all";
+import { useRef } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const Hero = () => {
-  useGSAP(() => {
-    const heroSplit = new SplitText(".title", {
-      type: "chars, words",
-    });
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-    const paragraphSplit = new SplitText(".subtitle", {
-      type: "lines",
-    });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  useGSAP(() => {
+    const heroSplit = new SplitText(".title", { type: "chars, words" });
+    const paragraphSplit = new SplitText(".subtitle", { type: "lines" });
 
     heroSplit.chars.forEach((char) => char.classList.add("text-gradient"));
 
@@ -43,8 +42,39 @@ const Hero = () => {
           scrub: true,
         },
       })
-      .to(".right-leaf", { y: 400 }, 0)
-      .to(".left-leaf", { y: -300 }, 0);
+      .to(".right-leaf", { y: isMobile ? 200 : 400 }, 0)
+      .to(".left-leaf", { y: isMobile ? -200 : -300 }, 0);
+
+    const videoElement = videoRef.current;
+
+    if (videoElement) {
+      const startValue = isMobile ? "top 50%" : "center 60%";
+      const endValue = isMobile ? "120% top" : "bottom top";
+
+      const videoTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: videoElement,
+          start: startValue,
+          end: endValue,
+          scrub: true,
+          pin: true,
+        },
+      });
+
+      const setupVideoAnimation = () => {
+        videoTimeline.to(videoElement, {
+          currentTime: videoElement.duration,
+        });
+      };
+
+      if (videoElement.readyState >= 1) {
+        setupVideoAnimation();
+      } else {
+        videoElement.onloadedmetadata = setupVideoAnimation;
+      }
+
+      return () => (videoElement.onloadedmetadata = null);
+    }
   }, []);
 
   return (
@@ -74,6 +104,10 @@ const Hero = () => {
           </div>
         </div>
       </section>
+
+      <div className='video absolute inset-0'>
+        <video ref={videoRef} muted playsInline preload='auto' src='/videos/output.mp4' />
+      </div>
     </>
   );
 };
